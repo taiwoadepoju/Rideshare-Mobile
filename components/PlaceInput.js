@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, Keyboard } from 'react-native'
+import Config from 'react-native-config';
 import _ from 'lodash';
 
 export default class PlaceInput extends Component {
@@ -12,7 +13,7 @@ export default class PlaceInput extends Component {
   async getPlaces() {
     const { userLongitude, userLatitude } = this.props;
     try {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyCUmHpb7qdmoMy_yUdqfReGTfwmwo2aTG0&input=${this.state.locationText}&location=${userLatitude},${userLongitude}&radius=2000`, {
+      const res = await fetch(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${Config.GOOGLE_MAPS_API_KEY}&input=${this.state.locationText}&location=${userLatitude},${userLongitude}&radius=2000`, {
         method: "get",
         headers: {
           'Accept': 'application/json',

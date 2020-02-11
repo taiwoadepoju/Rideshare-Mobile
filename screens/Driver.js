@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Geolocation from 'react-native-geolocation-service';
 import { StyleSheet, PermissionsAndroid, Platform, View, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Text, ActivityIndicator, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
+import Config from 'react-native-config';
 import PlaceInput from '../components/PlaceInput';
 import PolyLine from '@mapbox/polyline';
 import socketIO from 'socket.io-client';
@@ -75,7 +76,7 @@ export default class Driver extends Component {
     console.log('place ID',placeId)
     const { userLongitude, userLatitude } = this.state;
     try {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=place_id:${placeId}&key=AIzaSyCUmHpb7qdmoMy_yUdqfReGTfwmwo2aTG0`, {
+      const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=place_id:${placeId}&key=${Config.GOOGLE_MAPS_API_KEY}`, {
         method: "get",
         headers: {
           'Accept': 'application/json',

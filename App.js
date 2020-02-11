@@ -16,6 +16,7 @@ export default class App extends Component {
 
   render() {
     const { isDriver, isPassenger, hideButton } = this.state;
+
     return (
       <View style={styles.container}>
         {!hideButton  && <Button title="Passenger" onPress={() => this.setState({ isPassenger: true, hideButton: true })} />}

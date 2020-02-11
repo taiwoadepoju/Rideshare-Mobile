@@ -6,6 +6,7 @@ import PlaceInput from '../components/PlaceInput';
 import PolyLine from '@mapbox/polyline';
 import socketIO from 'socket.io-client';
 import BottomButton from '../components/BottomButton';
+import Config from 'react-native-config';
 
 export default class Passenger extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ export default class Passenger extends Component {
   showDirectionsOnMap = async (placeId) => {
     const { userLongitude, userLatitude } = this.state;
     try {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=place_id:${placeId}&key=AIzaSyCUmHpb7qdmoMy_yUdqfReGTfwmwo2aTG0`, {
+      const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=place_id:${placeId}&key=${Config.GOOGLE_MAPS_API_KEY}`, {
         method: "get",
         headers: {
           'Accept': 'application/json',
