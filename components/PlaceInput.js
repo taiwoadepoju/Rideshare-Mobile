@@ -43,7 +43,6 @@ export default class PlaceInput extends Component {
   render() {
     const { locationList, locationText } = this.state;
     const { locationListStyle, secondaryText, placeInputStyle } = styles;
-    console.log(locationText)
 
     return (
       <View>
