@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Geolocation from 'react-native-geolocation-service';
-import { StyleSheet, PermissionsAndroid, Platform, View, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Text, ActivityIndicator, Image } from 'react-native';
+import { StyleSheet, PermissionsAndroid, Platform, View, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import Config from 'react-native-config';
-import PlaceInput from '../components/PlaceInput';
 import PolyLine from '@mapbox/polyline';
 import socketIO from 'socket.io-client';
 import BottomButton from '../components/BottomButton';
+
+const socket = socketIO.connect("http://192.168.8.102:3000");
 
 export default class Driver extends Component {
   constructor(props) {
@@ -101,10 +102,9 @@ export default class Driver extends Component {
     }
   }
 
-  findPasengers = async () => {
+  findPasengers = () => {
     this.setState({ loading: true })
 
-    const socket = socketIO.connect("http://192.168.8.102:3000");
     socket.on("connect", () => {
       socket.emit("passengerRequest");
     });
@@ -114,6 +114,11 @@ export default class Driver extends Component {
       this.setState({ loading: false, passengerFound: true, buttonText: "FOUND PASSENGER! ACCEPT RIDE?" });
     })
     
+  }
+
+  acceptPassengerRequest = () => {
+    const { latitude, longitude } = this.state;
+    socket.emit("driverLocation", { latitude, longitude });
   }
 
 
@@ -148,7 +153,7 @@ export default class Driver extends Component {
               </Marker>
             }
           </MapView>
-          <BottomButton onPressFunction={this.findPasengers} buttonText={buttonText} loading={loading}/>
+          <BottomButton onPressFunction={passengerFound ? this.acceptPassengerRequest : this.findPasengers} buttonText={buttonText} loading={loading}/>
 
         </View>
       </TouchableWithoutFeedback>
