@@ -108,7 +108,10 @@ export default class Passenger extends Component {
     socket.on("connect", () => {
       console.log("Client is connected... A passenger is looking for driver")
       socket.emit("taxiRequest", routeResponse)
-      this.setState({ loading: false })
+      
+      socket.on("driverLocation", () => {
+        this.setState({ loading: false });
+      })
     })
   }
 
