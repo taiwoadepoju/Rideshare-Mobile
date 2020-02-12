@@ -7,7 +7,7 @@ import PolyLine from '@mapbox/polyline';
 import socketIO from 'socket.io-client';
 import BottomButton from '../components/BottomButton';
 
-const socket = socketIO.connect("http://192.168.8.102:3000");
+let socket = socketIO.connect("http://192.168.8.102:3000");
 
 export default class Driver extends Component {
   constructor(props) {
