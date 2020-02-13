@@ -117,8 +117,8 @@ export default class Driver extends Component {
 
   acceptPassengerRequest = () => {
     const socket = socketIO.connect("http://192.168.8.102:3000");
-    const { latitude, longitude } = this.state;
-    socket.emit("driverLocation", { latitude, longitude });
+    const { userLatitude, userLongitude } = this.state;
+    socket.emit("driverLocation", { latitude: userLatitude, longitude: userLongitude });
   }
 
 
