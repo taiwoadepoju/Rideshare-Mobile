@@ -7,7 +7,7 @@ import PolyLine from '@mapbox/polyline';
 import socketIO from 'socket.io-client';
 import BottomButton from '../components/BottomButton';
 
-let socket = socketIO.connect("http://192.168.8.102:3000");
+// let socket = socketIO.connect("http://192.168.8.102:3000");
 
 export default class Driver extends Component {
   constructor(props) {
@@ -24,8 +24,6 @@ export default class Driver extends Component {
     }
     this.map = React.createRef();
   }
-
-
 
   componentDidMount() {
     this.requestFineLocation()
@@ -103,6 +101,7 @@ export default class Driver extends Component {
   }
 
   findPasengers = () => {
+    const socket = socketIO.connect("http://192.168.8.102:3000");
     this.setState({ loading: true })
 
     socket.on("connect", () => {
@@ -117,6 +116,7 @@ export default class Driver extends Component {
   }
 
   acceptPassengerRequest = () => {
+    const socket = socketIO.connect("http://192.168.8.102:3000");
     const { latitude, longitude } = this.state;
     socket.emit("driverLocation", { latitude, longitude });
   }

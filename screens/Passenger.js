@@ -8,7 +8,6 @@ import socketIO from 'socket.io-client';
 import BottomButton from '../components/BottomButton';
 import Config from 'react-native-config';
 
-let socket = socketIO.connect("http://192.168.8.102:3000");
 
 export default class Passenger extends Component {
   constructor(props) {
@@ -102,6 +101,7 @@ export default class Passenger extends Component {
   }
 
   requestDriver = async () => {
+    const socket = socketIO.connect("http://192.168.8.102:3000");
     const { routeResponse } = this.state;
     this.setState({ loading: true })
 
