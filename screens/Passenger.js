@@ -125,7 +125,7 @@ export default class Passenger extends Component {
 
   render() {
     const { userLongitude, userLatitude, destinationCoordinates, loading, driverLocation, driverFound, buttonText } = this.state;
-    console.log('~~@@~~',this.state.routeResponse)
+
     return (
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
         <View style={styles.container}>
@@ -133,7 +133,7 @@ export default class Passenger extends Component {
             ref={this.map}
             showsUserLocation
             followsUserLocation
-            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            // provider={PROVIDER_GOOGLE} // remove if not using Google Maps
             style={styles.map}
             initialRegion={{
               latitude: userLatitude,
