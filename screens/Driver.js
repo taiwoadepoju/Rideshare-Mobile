@@ -101,7 +101,7 @@ export default class Driver extends Component {
   }
 
   findPasengers = () => {
-    const socket = socketIO.connect("http://192.168.8.102:3000");
+    const socket = socketIO.connect("http://192.168.8.100:3000");
     this.setState({ loading: true })
 
     socket.on("connect", () => {
@@ -116,7 +116,7 @@ export default class Driver extends Component {
   }
 
   acceptPassengerRequest = () => {
-    const socket = socketIO.connect("http://192.168.8.102:3000");
+    const socket = socketIO.connect("http://192.168.8.100:3000");
     const { userLatitude, userLongitude } = this.state;
     socket.emit("driverLocation", { latitude: userLatitude, longitude: userLongitude });
   }

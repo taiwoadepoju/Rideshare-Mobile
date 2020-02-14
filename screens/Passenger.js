@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Geolocation from 'react-native-geolocation-service';
-import { StyleSheet, PermissionsAndroid, Platform, View, TouchableWithoutFeedback, Keyboard, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, PermissionsAndroid, Platform, View, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import PlaceInput from '../components/PlaceInput';
 import PolyLine from '@mapbox/polyline';
@@ -19,7 +19,10 @@ export default class Passenger extends Component {
       lastPosition: '',
       destinationCoordinates: [],
       routeResponse: {},
-      loading: false
+      loading: false,
+      buttonText: "REQUEST RIDE",
+      driverFound: false,
+      driverLocation: {}
     }
     this.map = React.createRef();
   }
@@ -101,7 +104,7 @@ export default class Passenger extends Component {
   }
 
   requestDriver = async () => {
-    const socket = socketIO.connect("http://192.168.8.102:3000");
+    const socket = socketIO.connect("http://192.168.8.100:3000");
     const { routeResponse } = this.state;
     this.setState({ loading: true })
 
@@ -111,13 +114,17 @@ export default class Passenger extends Component {
       socket.emit("taxiRequest", routeResponse)
     })
 
-    socket.on("driverLocation", () => {
-      this.setState({ loading: false });
+    socket.on("driverLocation", (driverLocation) => {
+      let { destinationCoordinates } = this.state;
+      destinationCoordinates.concat(driverLocation);
+ 
+      this.map.current.fitToCoordinates(destinationCoordinates, { edgePadding: { top: 200, bottom: 80, left: 40, right: 40 } });
+      this.setState({ loading: false, driverFound: true, driverLocation });
     })
   }
 
   render() {
-    const { userLongitude, userLatitude, destinationCoordinates, loading } = this.state;
+    const { userLongitude, userLatitude, destinationCoordinates, loading, driverLocation, driverFound, buttonText } = this.state;
     console.log('~~@@~~',this.state.routeResponse)
     return (
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
@@ -128,7 +135,7 @@ export default class Passenger extends Component {
             followsUserLocation
             provider={PROVIDER_GOOGLE} // remove if not using Google Maps
             style={styles.map}
-            region={{
+            initialRegion={{
               latitude: userLatitude,
               longitude: userLongitude,
               latitudeDelta: 0.015,
@@ -142,9 +149,12 @@ export default class Passenger extends Component {
                 strokeColor="green"
               />}
             {destinationCoordinates.length > 0 &&
-              <Marker
-                coordinate={destinationCoordinates[destinationCoordinates.length - 1]}
-              />}
+              <Marker coordinate={destinationCoordinates[destinationCoordinates.length - 1]} />}
+              {driverFound &&
+              <Marker coordinate={driverLocation}>
+                <Image source={require('../images/car_icon.png')} style={{ width: 40, height: 40 }} />
+              </Marker>
+                }
           </MapView>
       
           <PlaceInput userLatitude={userLatitude} userLongitude={userLongitude} showDirectionsOnMap={this.showDirectionsOnMap} />
