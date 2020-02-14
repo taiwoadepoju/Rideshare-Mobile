@@ -104,7 +104,7 @@ export default class Passenger extends Component {
   }
 
   requestDriver = async () => {
-    const socket = socketIO.connect("http://192.168.8.100:3000");
+    const socket = socketIO.connect("http://192.168.8.101:3000");
     const { routeResponse } = this.state;
     this.setState({ loading: true })
 

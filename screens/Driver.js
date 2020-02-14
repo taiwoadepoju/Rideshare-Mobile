@@ -129,7 +129,7 @@ export default class Driver extends Component {
   }
 
   findPasengers = () => {
-    const socket = socketIO.connect("http://192.168.8.100:3000");
+    const socket = socketIO.connect("http://192.168.8.101:3000");
     this.setState({ loading: true })
 
     socket.on("connect", () => {
@@ -145,7 +145,7 @@ export default class Driver extends Component {
 
   acceptPassengerRequest = () => {
     const { destinationCoordinates } = this.state;
-    const socket = socketIO.connect("http://192.168.8.100:3000");
+    const socket = socketIO.connect("http://192.168.8.101:3000");
     const { userLatitude, userLongitude } = this.state;
     
 
@@ -166,7 +166,7 @@ export default class Driver extends Component {
         BackgroundGeolocation.start(); //triggers start on start event
       }
     });
-    
+
     if (Platform.OS === 'ios'){
       Linking.openURL(`http://maps.apple.com/?daddr=${passengerLocation.latitude},${passengerLocation.longitude}`);
     } else {
